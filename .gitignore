@@ -1,0 +1,15 @@
+.DS_Store
+*.xcuserstate
+xcuserdata/
+DerivedData/
+build/
+
+*.pdf
+*.docx
+*.heic
+*.zip
+
+FAQ-Entwurf.md
+Faktencheck-Matrix.md
+Quellenliste.md
+Lizenz.md
