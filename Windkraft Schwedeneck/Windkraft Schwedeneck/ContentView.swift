@@ -708,12 +708,15 @@ private struct StatusBar: View {
                 Button {
                     onShowMap()
                 } label: {
-                    Label("Karte", systemImage: "map")
-                        .font(.caption.weight(.semibold))
-                        .labelStyle(.titleAndIcon)
+                    ViewThatFits {
+                        Label("Karte", systemImage: "map")
+                        Text("Karte")
+                    }
+                    .font(.caption.weight(.semibold))
+                    .labelStyle(.titleAndIcon)
                 }
                 .buttonStyle(.bordered)
-                .tint(.white)
+                .tint(.accentColor)
                 .accessibilityLabel("Karte anzeigen")
 
                 InterfaceModeButton(model: model)
@@ -740,7 +743,7 @@ private struct StatusBar: View {
             }
         }
         .padding(10)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
         .animation(.easeInOut(duration: 0.22), value: model.interfaceMode)
     }
 }
@@ -758,7 +761,7 @@ private struct InterfaceModeButton: View {
                 .font(.caption.weight(.semibold))
         }
         .buttonStyle(.bordered)
-        .tint(.white)
+        .tint(.accentColor)
         .accessibilityLabel(accessibilityTitle)
         .contentShape(.rect)
     }
@@ -850,7 +853,7 @@ private struct AccuracyPill: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 5)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 6))
+            .background(.thinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 6))
     }
 }
 
@@ -968,8 +971,8 @@ private struct CalibrationPanel: View {
                 }
             }
         }
-        .padding(12)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .padding(10)
+        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
         .animation(.easeInOut(duration: 0.22), value: model.interfaceMode)
         .animation(.easeInOut(duration: 0.22), value: model.rotorOrientationMode)
     }

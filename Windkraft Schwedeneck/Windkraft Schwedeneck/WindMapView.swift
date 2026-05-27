@@ -53,16 +53,19 @@ private struct WindMapHeader: View {
             Button {
                 onShowAR()
             } label: {
-                Label("AR", systemImage: "camera.viewfinder")
-                    .font(.caption.weight(.semibold))
-                    .labelStyle(.titleAndIcon)
+                ViewThatFits {
+                    Label("AR", systemImage: "camera.viewfinder")
+                    Text("AR")
+                }
+                .font(.caption.weight(.semibold))
+                .labelStyle(.titleAndIcon)
             }
             .buttonStyle(.bordered)
-            .tint(.white)
+            .tint(.accentColor)
             .accessibilityLabel("AR Ansicht anzeigen")
         }
         .padding(10)
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 8))
+        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
     }
 }
 
