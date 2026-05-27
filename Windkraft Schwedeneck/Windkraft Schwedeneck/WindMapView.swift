@@ -12,18 +12,23 @@ import SwiftUI
 struct WindMapView: View {
     @ObservedObject var model: WindARViewModel
     let onShowAR: () -> Void
+    @State private var mapStyle = WindMapDisplayStyle.standard
 
     var body: some View {
         Group {
             if #available(iOS 17.0, *) {
-                WindModernMapView(model: model)
+                WindModernMapView(model: model, mapStyle: mapStyle)
 
             } else {
                 WindLegacyMapView(model: model)
             }
         }
         .safeAreaInset(edge: .top) {
-            WindMapHeader(model: model, onShowAR: onShowAR)
+            WindMapHeader(
+                model: model,
+                mapStyle: $mapStyle,
+                onShowAR: onShowAR
+            )
                 .padding(.horizontal, 14)
                 .padding(.top, 12)
         }
@@ -32,6 +37,7 @@ struct WindMapView: View {
 
 private struct WindMapHeader: View {
     @ObservedObject var model: WindARViewModel
+    @Binding var mapStyle: WindMapDisplayStyle
     let onShowAR: () -> Void
 
     var body: some View {
@@ -49,6 +55,19 @@ private struct WindMapHeader: View {
             }
 
             Spacer(minLength: 8)
+
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    mapStyle.toggle()
+                }
+            } label: {
+                Label(mapStyle.buttonTitle, systemImage: mapStyle.systemImage)
+                    .font(.caption.weight(.semibold))
+                    .labelStyle(.iconOnly)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.accentColor)
+            .accessibilityLabel(mapStyle.accessibilityLabel)
 
             Button {
                 onShowAR()
@@ -72,6 +91,7 @@ private struct WindMapHeader: View {
 @available(iOS 17.0, *)
 private struct WindModernMapView: View {
     @ObservedObject var model: WindARViewModel
+    let mapStyle: WindMapDisplayStyle
     @Namespace private var mapScope
     @State private var cameraPosition: MapCameraPosition = .region(WindMapConfiguration.schwedeneckRegion)
 
@@ -91,7 +111,7 @@ private struct WindModernMapView: View {
 
             UserAnnotation()
         }
-        .mapStyle(.standard(elevation: .flat, pointsOfInterest: .excludingAll))
+        .mapStyle(mapStyle.mapKitStyle)
         .mapControls {
             MapUserLocationButton()
             MapCompass()
@@ -127,6 +147,52 @@ private struct WindLegacyMapView: View {
                     WindUserLocationMarker()
                 }
             }
+        }
+    }
+}
+
+private enum WindMapDisplayStyle {
+    case standard
+    case satellite
+
+    var buttonTitle: String {
+        switch self {
+        case .standard:
+            "Satellit"
+        case .satellite:
+            "Standard"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .standard:
+            "map"
+        case .satellite:
+            "globe.europe.africa.fill"
+        }
+    }
+
+    var accessibilityLabel: String {
+        switch self {
+        case .standard:
+            "Satellitenansicht anzeigen"
+        case .satellite:
+            "Standardkarte anzeigen"
+        }
+    }
+
+    mutating func toggle() {
+        self = self == .standard ? .satellite : .standard
+    }
+
+    @available(iOS 17.0, *)
+    var mapKitStyle: MapStyle {
+        switch self {
+        case .standard:
+            .standard(elevation: .flat, pointsOfInterest: .excludingAll)
+        case .satellite:
+            .imagery(elevation: .flat)
         }
     }
 }
