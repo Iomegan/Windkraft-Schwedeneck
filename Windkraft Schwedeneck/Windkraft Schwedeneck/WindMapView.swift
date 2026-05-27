@@ -83,6 +83,12 @@ private struct WindModernMapView: View {
                 }
             }
 
+            ForEach(WindExistingTurbine.schwedeneckExisting) { turbine in
+                Annotation(turbine.name, coordinate: turbine.coordinate) {
+                    WindExistingTurbineMapMarker(name: turbine.name)
+                }
+            }
+
             UserAnnotation()
         }
         .mapStyle(.standard(elevation: .flat, pointsOfInterest: .excludingAll))
@@ -100,6 +106,7 @@ private struct WindLegacyMapView: View {
 
     var mapItems: [WindMapItem] {
         var items = model.turbines.map { WindMapItem(turbine: $0) }
+        items.append(contentsOf: WindExistingTurbine.schwedeneckExisting.map { WindMapItem(existingTurbine: $0) })
 
         if let location = model.deviceLocation {
             items.append(WindMapItem(userLocation: location))
@@ -114,6 +121,8 @@ private struct WindLegacyMapView: View {
                 switch item.kind {
                 case .turbine(let name):
                     WindTurbineMapMarker(name: name)
+                case .existingTurbine(let name):
+                    WindExistingTurbineMapMarker(name: name)
                 case .user:
                     WindUserLocationMarker()
                 }
@@ -141,6 +150,38 @@ private struct WindTurbineMapMarker: View {
     }
 }
 
+private struct WindExistingTurbineMapMarker: View {
+    let name: String
+
+    var body: some View {
+        VStack(spacing: 3) {
+            ZStack {
+                Circle()
+                    .fill(.orange.opacity(0.9))
+                    .frame(width: 28, height: 28)
+                Image("windkraftanlage")
+                    .resizable()
+                    .foregroundStyle(.white)
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxHeight: 22)
+            }
+
+            VStack(spacing: 1) {
+                Text(name)
+                    .font(.caption2.weight(.bold))
+                Text("Bestand · vsl. Rückbau")
+                    .font(.system(size: 9, weight: .semibold))
+            }
+            .padding(.horizontal, 5)
+            .padding(.vertical, 3)
+            .foregroundStyle(.white)
+            .background(.orange.opacity(0.92), in: RoundedRectangle(cornerRadius: 4))
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(name), bestehende Anlage, vermutlich Rückbau")
+    }
+}
+
 private struct WindUserLocationMarker: View {
     var body: some View {
         ZStack {
@@ -165,9 +206,29 @@ private enum WindMapConfiguration {
     )
 }
 
+private struct WindExistingTurbine: Identifiable {
+    let name: String
+    let latitude: Double
+    let longitude: Double
+    let groundAltitudeMSL: Double
+
+    var id: String { name }
+
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    static let schwedeneckExisting = [
+        WindExistingTurbine(name: "Bestand 1", latitude: 54.456132, longitude: 10.099338, groundAltitudeMSL: 42),
+        WindExistingTurbine(name: "Bestand 2", latitude: 54.458414, longitude: 10.100861, groundAltitudeMSL: 42),
+        WindExistingTurbine(name: "Bestand 3", latitude: 54.458526, longitude: 10.096473, groundAltitudeMSL: 40)
+    ]
+}
+
 private struct WindMapItem: Identifiable {
     enum Kind {
         case turbine(String)
+        case existingTurbine(String)
         case user
     }
 
@@ -179,6 +240,12 @@ private struct WindMapItem: Identifiable {
         id = turbine.name
         coordinate = turbine.coordinate
         kind = .turbine(turbine.name)
+    }
+
+    init(existingTurbine: WindExistingTurbine) {
+        id = existingTurbine.name
+        coordinate = existingTurbine.coordinate
+        kind = .existingTurbine(existingTurbine.name)
     }
 
     init(userLocation: CLLocation) {
