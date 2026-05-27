@@ -65,7 +65,7 @@ private struct WindMapHeader: View {
             .accessibilityLabel("AR Ansicht anzeigen")
         }
         .padding(10)
-        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
+        .background(.ultraThinMaterial.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
     }
 }
 

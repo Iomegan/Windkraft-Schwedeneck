@@ -101,8 +101,8 @@ struct ContentView: View {
                         selectedMainView = .map
                     }
                 }
-                    .padding(.horizontal, 14)
-                    .padding(.top, 12)
+                .padding(.horizontal, 14)
+                .padding(.top, 12)
 
                 Spacer()
 
@@ -323,11 +323,11 @@ private struct StartDisclaimerView: View {
                         .font(.custom("Helvetica", size: 23).weight(.semibold))
                         .foregroundStyle(UBSWelcomeStyle.heading)
 
-                    Text("Diese App wurde von Daniel Witt für die Unabhängige Bürgergemeinschaft Schwedeneck (UBS) entwickelt. Sie soll dabei helfen, die derzeit in der Gemeinde geplanten möglichen Windkraftanlagen aus realen Perspektiven besser einzuordnen und die Diskussion darüber sachlicher und transparenter zu gestalten. Bürgerinnen und Bürger können damit von verschiedenen Standorten innerhalb der Gemeinde selbst nachvollziehen, ob und in welchem Ausmaß die Anlagen sichtbar wären. So entsteht eine realistischere Grundlage für die persönliche Meinungsbildung und den öffentlichen Austausch.")
+                    Text("Die Unabhängige Bürgergemeinschaft Schwedeneck (UBS) möchte mit dieser App dabei helfen, die derzeit in der Gemeinde in Planung befindlichen Windkraftanlagen aus realen Perspektiven besser einzuordnen und die Diskussion darüber sachlicher und transparenter zu gestalten. Bürgerinnen und Bürger können damit von verschiedenen Standorten innerhalb der Gemeinde selbst nachvollziehen, ob und in welchem Ausmaß die Anlagen sichtbar wären. Die UBS möchte damit einen Beitrag zur persönlichen Meinungsbildung und den öffentlichen Austausch beitragen.")
 
                     Text("Es wurden die bekannten Standorte, Höhen und technischen Daten sorgfältig umgesetzt. Trotzdem bleibt die Darstellung eine Näherung: GPS, Kompass, AR-Tracking, Gelände, Verdeckung, Licht und Planungsdaten können von der Realität abweichen. Eine Haftung für die Richtigkeit wird nicht übernommen.")
 
-                    Text("Aktuell wird die aus dem aktuellen Stand der Planung größtmögliche Anzahl und Höhe der Anlagen gezeigt.")
+                    Text("Aktuell wird die aus dem aktuellen Stand der Planung größtmögliche Anzahl und Höhe der Anlagen gezeigt. Betreiber der App ist Daniel Witt, der sie im Auftrag der Unabhängigen Bürgergemeinschaft Schwedeneck (UBS) entwickelt hat.")
                         .foregroundStyle(UBSWelcomeStyle.secondaryText)
                 }
                 .font(.custom("Helvetica", size: 17))
@@ -349,21 +349,19 @@ private struct StartDisclaimerView: View {
                     Link("www.ubs-schwedeneck.de/windkraft-faq", destination: URL(string: "https://www.ubs-schwedeneck.de/windkraft-faq")!)
                         .multilineTextAlignment(.leading)
 
-                    Text("Zur vollen Transparenz ist dieses Projekt als Open Source verfügbar:")
+                    Text("Dieses Projekt ist als Open Source verfügbar:")
                         .font(.custom("Helvetica", size: 14))
                         .foregroundStyle(UBSWelcomeStyle.secondaryText)
-                    
+
                     Link(destination: URL(string: "https://github.com/Iomegan/Windkraft-Schwedeneck")!) {
-                       Text( "www.github.com/Iomegan/Windkraft-Schwedeneck")
+                        Text("www.github.com/Iomegan/Windkraft-Schwedeneck")
                             .multilineTextAlignment(.leading)
                     }
-                        
-
                 }
                 .font(.custom("Helvetica", size: 17))
                 .tint(UBSWelcomeStyle.heading)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                 Button {
                     withAnimation(.easeInOut.speed(0.25)) {
                         onConfirm()
@@ -743,7 +741,7 @@ private struct StatusBar: View {
             }
         }
         .padding(10)
-        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
+        .background(.ultraThinMaterial.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
         .animation(.easeInOut(duration: 0.22), value: model.interfaceMode)
     }
 }
@@ -972,7 +970,7 @@ private struct CalibrationPanel: View {
             }
         }
         .padding(10)
-        .background(.ultraThinMaterial.opacity(0.85), in: RoundedRectangle(cornerRadius: 8))
+        .background(.ultraThinMaterial.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
         .animation(.easeInOut(duration: 0.22), value: model.interfaceMode)
         .animation(.easeInOut(duration: 0.22), value: model.rotorOrientationMode)
     }
