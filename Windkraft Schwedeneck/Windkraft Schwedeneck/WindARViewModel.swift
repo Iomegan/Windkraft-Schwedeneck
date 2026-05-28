@@ -11,7 +11,7 @@ import Combine
 import Foundation
 import simd
 import UIKit
-import WeatherKit
+//import WeatherKit
 
 @MainActor
 final class WindARViewModel: NSObject, ObservableObject {
@@ -40,11 +40,11 @@ final class WindARViewModel: NSObject, ObservableObject {
     let turbines = WindTurbine.schwedeneckPrototypes
 
     private let locationManager = CLLocationManager()
-    private let weatherService = WeatherService.shared
+//    private let weatherService = WeatherService.shared
     private let maximumVisualizationDistance = 10_000.0
     private let weatherWindRefreshInterval: TimeInterval = 30 * 60
     private let weatherWindDistanceThreshold = 1_000.0
-    private var weatherWindTask: Task<Void, Never>?
+//    private var weatherWindTask: Task<Void, Never>?
     private var lastWeatherWindRequestDate: Date?
     private var lastWeatherWindLocation: CLLocation?
 
@@ -415,47 +415,47 @@ final class WindARViewModel: NSObject, ObservableObject {
         )
     }
 
-    private func refreshWeatherWindIfNeeded(for location: CLLocation) {
-        guard weatherWindTask == nil else {
-            return
-        }
+//    private func refreshWeatherWindIfNeeded(for location: CLLocation) {
+//        guard weatherWindTask == nil else {
+//            return
+//        }
+//
+//        guard location.horizontalAccuracy > 0, location.horizontalAccuracy <= 1_000 else {
+//            return
+//        }
+//
+//        if
+//            let lastRequestDate = lastWeatherWindRequestDate,
+//            Date().timeIntervalSince(lastRequestDate) < weatherWindRefreshInterval,
+//            let lastLocation = lastWeatherWindLocation,
+//            location.distance(from: lastLocation) < weatherWindDistanceThreshold
+//        {
+//            return
+//        }
 
-        guard location.horizontalAccuracy > 0, location.horizontalAccuracy <= 1_000 else {
-            return
-        }
+//        lastWeatherWindRequestDate = Date()
+//        lastWeatherWindLocation = location
+//        weatherWindStatus = "Windrichtung wird geladen"
 
-        if
-            let lastRequestDate = lastWeatherWindRequestDate,
-            Date().timeIntervalSince(lastRequestDate) < weatherWindRefreshInterval,
-            let lastLocation = lastWeatherWindLocation,
-            location.distance(from: lastLocation) < weatherWindDistanceThreshold
-        {
-            return
-        }
-
-        lastWeatherWindRequestDate = Date()
-        lastWeatherWindLocation = location
-        weatherWindStatus = "Windrichtung wird geladen"
-
-        weatherWindTask = Task { [weak self, weatherService] in
-            do {
-                let weather = try await weatherService.weather(for: location)
-                let windFromDegrees = weather.currentWeather.wind.direction.converted(to: .degrees).value
-                await MainActor.run {
-                    self?.weatherWindFromDegrees = WindDirectionFormatter.normalized(windFromDegrees)
-                    self?.weatherWindStatus = "Live-Windrichtung"
-                    self?.weatherWindTask = nil
-                }
-            } catch {
-                NSLog("Fehler beim Laden des Wetters: \(error.localizedDescription)")
-                await MainActor.run {
-                    self?.weatherWindFromDegrees = nil
-                    self?.weatherWindStatus = "Windrichtung saisonal geschätzt"
-                    self?.weatherWindTask = nil
-                }
-            }
-        }
-    }
+//        weatherWindTask = Task { [weak self, weatherService] in
+//            do {
+//                let weather = try await weatherService.weather(for: location)
+//                let windFromDegrees = weather.currentWeather.wind.direction.converted(to: .degrees).value
+//                await MainActor.run {
+//                    self?.weatherWindFromDegrees = WindDirectionFormatter.normalized(windFromDegrees)
+//                    self?.weatherWindStatus = "Live-Windrichtung"
+//                    self?.weatherWindTask = nil
+//                }
+//            } catch {
+//                NSLog("Fehler beim Laden des Wetters: \(error.localizedDescription)")
+//                await MainActor.run {
+//                    self?.weatherWindFromDegrees = nil
+//                    self?.weatherWindStatus = "Windrichtung saisonal geschätzt"
+//                    self?.weatherWindTask = nil
+//                }
+//            }
+//        }
+//    }
 
     private func formattedDistance(_ meters: Double) -> String {
         if meters >= 1000 {
@@ -491,7 +491,7 @@ extension WindARViewModel: @preconcurrency CLLocationManagerDelegate {
         deviceLocation = newest
         updateLocationStatus(for: newest)
         refreshAccuracySummary()
-        refreshWeatherWindIfNeeded(for: newest)
+//        refreshWeatherWindIfNeeded(for: newest)
     }
 
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
