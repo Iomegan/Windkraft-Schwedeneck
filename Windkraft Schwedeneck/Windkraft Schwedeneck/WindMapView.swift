@@ -79,7 +79,7 @@ private struct WindMapHeader: View {
                 .font(.caption.weight(.semibold))
                 .labelStyle(.titleAndIcon)
             }
-            .buttonStyle(.bordered)
+            .buttonStyle(.borderedProminent)
             .tint(.accentColor)
             .accessibilityLabel("AR Ansicht anzeigen")
         }

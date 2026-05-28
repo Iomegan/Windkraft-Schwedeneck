@@ -691,6 +691,7 @@ private struct StatusBar: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(maxHeight: 28)
+                    .foregroundStyle(.primary)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(model.turbineTitle)
@@ -713,7 +714,7 @@ private struct StatusBar: View {
                     .font(.caption.weight(.semibold))
                     .labelStyle(.titleAndIcon)
                 }
-                .buttonStyle(.bordered)
+                .buttonStyle(.borderedProminent)
                 .tint(.accentColor)
                 .accessibilityLabel("Karte anzeigen")
 
@@ -758,7 +759,7 @@ private struct InterfaceModeButton: View {
             Text(buttonTitle)
                 .font(.caption.weight(.semibold))
         }
-        .buttonStyle(.bordered)
+        .buttonStyle(.borderedProminent)
         .tint(.accentColor)
         .accessibilityLabel(accessibilityTitle)
         .contentShape(.rect)
