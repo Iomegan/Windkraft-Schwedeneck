@@ -698,7 +698,7 @@ private struct StatusBar: View {
                         .font(.headline)
                     Text(model.interfaceMode == .expert ? model.statusLine : model.locationStatus)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary.opacity(0.85))
                         .lineLimit(2)
                 }
 
@@ -789,7 +789,7 @@ private struct VisualizationStatusView: View {
                     .font(.caption.weight(.semibold))
                 Text(status.detail)
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.85))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -826,14 +826,14 @@ private struct AccuracySummaryView: View {
             if let warningText = summary.warningText {
                 Text(warningText)
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.85))
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             if let infoText = summary.infoText {
                 Text(infoText)
                     .font(.caption2)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.85))
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -864,7 +864,7 @@ private struct MetricPill: View {
         VStack(alignment: .leading, spacing: 1) {
             Text(title)
                 .font(.caption2)
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary.opacity(0.85))
             Text(value)
                 .font(.caption.weight(.semibold))
                 .monospacedDigit()
@@ -912,10 +912,10 @@ private struct CalibrationPanel: View {
                     } else {
                         HStack(spacing: 8) {
                             Image(systemName: "location.north.line.fill")
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.primary.opacity(0.85))
                             Text("Automatisch")
                                 .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .foregroundStyle(.primary.opacity(0.85))
                             Spacer()
                         }
                         .frame(height: 32)
@@ -925,13 +925,18 @@ private struct CalibrationPanel: View {
             }
 
             HStack(spacing: 10) {
-                Label("Bäume/Gebäude", systemImage: "building.2")
-                    .font(.caption.weight(.semibold))
+                ViewThatFits {
+                    Label("Anlagen von Bäumen/Gebäuden verdecken lassen", systemImage: "building.2")
+                    Label("Bäumen/Gebäuden verdecken Anlagen", systemImage: "building.2")
+                    Label("Bäumen/Gebäuden", systemImage: "building.2")
+                }
+                .font(.caption.weight(.semibold))
 
                 Spacer()
 
                 Toggle("Einbeziehen", isOn: $model.skyOcclusionEnabled)
                     .font(.caption.weight(.semibold))
+                    .labelsHidden()
                     .toggleStyle(.switch)
                     .accessibilityLabel("Bäume und Gebäude davor berücksichtigen")
                     .tint(.accentColor)
@@ -946,7 +951,7 @@ private struct CalibrationPanel: View {
 
                     Text(model.rotorYawDetailText)
                         .font(.caption2)
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.primary.opacity(0.85))
                         .lineLimit(1)
                         .minimumScaleFactor(0.75)
                 }
@@ -992,7 +997,7 @@ private struct CalibrationSlider: View {
                 Spacer()
                 Text(value.formatted(.number.precision(.fractionLength(step < 1 ? 1 : 0))) + unit)
                     .font(.caption.monospacedDigit())
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.85))
             }
 
             Slider(value: $value, in: range, step: step)

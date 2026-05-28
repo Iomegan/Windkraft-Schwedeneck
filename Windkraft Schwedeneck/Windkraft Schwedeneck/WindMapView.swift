@@ -50,7 +50,7 @@ private struct WindMapHeader: View {
                     .font(.headline)
                 Text("\(model.turbineTitle) · \(model.locationStatus)")
                     .font(.caption)
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(.primary.opacity(0.85))
                     .lineLimit(2)
             }
 
