@@ -29,8 +29,8 @@ struct WindMapView: View {
                 mapStyle: $mapStyle,
                 onShowAR: onShowAR
             )
-                .padding(.horizontal, 14)
-                .padding(.top, 12)
+            .padding(.horizontal, 14)
+            .padding(.top, 12)
         }
     }
 }
@@ -97,15 +97,15 @@ private struct WindModernMapView: View {
 
     var body: some View {
         Map(position: $cameraPosition, scope: mapScope) {
-            ForEach(model.turbines) { turbine in
-                Annotation(turbine.name, coordinate: turbine.coordinate) {
-                    WindTurbineMapMarker(name: turbine.name)
-                }
-            }
-
             ForEach(WindExistingTurbine.schwedeneckExisting) { turbine in
                 Annotation(turbine.name, coordinate: turbine.coordinate) {
                     WindExistingTurbineMapMarker(name: turbine.name)
+                }
+            }
+
+            ForEach(model.turbines) { turbine in
+                Annotation(turbine.name, coordinate: turbine.coordinate) {
+                    WindTurbineMapMarker(name: turbine.name)
                 }
             }
 
@@ -224,24 +224,20 @@ private struct WindExistingTurbineMapMarker: View {
             ZStack {
                 Circle()
                     .fill(.orange.opacity(0.9))
-                    .frame(width: 28, height: 28)
+                    .frame(width: 23, height: 23)
                 Image("windkraftanlage")
                     .resizable()
                     .foregroundStyle(.white)
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxHeight: 22)
+                    .frame(maxHeight: 18)
             }
 
-            VStack(spacing: 1) {
-                Text(name)
-                    .font(.caption2.weight(.bold))
-                Text("Bestand · vsl. Rückbau")
-                    .font(.system(size: 9, weight: .semibold))
-            }
-            .padding(.horizontal, 5)
-            .padding(.vertical, 3)
-            .foregroundStyle(.white)
-            .background(.orange.opacity(0.92), in: RoundedRectangle(cornerRadius: 4))
+            Text("vsl. Rückbau")
+                .font(.system(size: 9, weight: .semibold))
+                .padding(.horizontal, 5)
+                .padding(.vertical, 3)
+                .foregroundStyle(.white)
+                .background(.orange.opacity(0.9), in: RoundedRectangle(cornerRadius: 4))
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("\(name), bestehende Anlage, vermutlich Rückbau")
